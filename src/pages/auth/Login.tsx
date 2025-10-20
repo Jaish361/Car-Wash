@@ -23,7 +23,7 @@ const Login = () => {
 
       // FIX: Handle different response formats
       const token = res.token || res.data?.token || res.data?.accessToken;
-      const userData = res.user || res.data?.user;
+      //const userData = res.user || res.data?.user;
 
       if (!token) {
         throw new Error('No token received');
