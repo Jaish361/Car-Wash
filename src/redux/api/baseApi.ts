@@ -11,7 +11,7 @@ import { toast } from 'sonner';
 import { logout, setUser } from '../features/auths/authSlice';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: '/api',
+  baseUrl: 'https://car-wash-backend-v2.vercel.app/api',
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
