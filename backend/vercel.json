@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "env": {
+    "MONGODB_URI": "@mongodb_uri",
+    "JWT_SECRET": "@jwt_secret",
+    "REFRESH_TOKEN_SECRET": "@refresh_token_secret",
+    "FRONTEND_URL": "@frontend_url",
+    "NODE_ENV": "production"
+  },
+  "functions": {
+    "src/server.ts": {
+      "runtime": "nodejs18.x"
+    }
+  }
+}

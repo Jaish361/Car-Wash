@@ -10,8 +10,12 @@ import { RootState } from '../store';
 import { toast } from 'sonner';
 import { logout, setUser } from '../features/auths/authSlice';
 
+const API_URL = import.meta.env.VITE_API_URL || 'https://car-wash-backend-v2.vercel.app/api';
+
+console.log('API URL:', API_URL); // Debug log
+
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://car-wash-backend-v2.vercel.app/api',
+  baseUrl: API_URL,
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
@@ -46,7 +50,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
   if (result?.error?.status === 401) {
     
 
-    const res = await fetch('https://car-wash-backend-v2.vercel.app/api/auth/refresh-token', {
+    const res = await fetch(`${API_URL}/auth/refresh-token`, {
       method: 'POST',
       credentials: 'include',
     });

@@ -18,6 +18,7 @@ const Login = () => {
     const toastId = toast.loading('Logging in');
 
     try {
+      console.log('Attempting login with:', data);
       const res = await login(data).unwrap();
       console.log("Login Response:", res); // Debug line
 
@@ -26,12 +27,12 @@ const Login = () => {
       //const userData = res.user || res.data?.user;
 
       if (!token) {
-        throw new Error('No token received');
+        throw new Error('No token received from server');
       }
 
       const user = verifyToken(token) as TUser;
       dispatch(setUser({ user: user, token: token }));
-      toast.success('Logged in', { id: toastId, duration: 2000 });
+      toast.success('Logged in successfully', { id: toastId, duration: 2000 });
 
       if (res.data?.needsPasswordChange) {
         // navigate('/change-password')
@@ -40,8 +41,19 @@ const Login = () => {
       }
     } catch (err: any) {
       console.error("Login error details:", err);
-      const errorMessage = err?.data?.message || err?.message || 'Something went wrong';
-      toast.error(errorMessage, { id: toastId, duration: 2000 });
+      
+      // Better error handling for different types of errors
+      let errorMessage = 'Something went wrong';
+      
+      if (err?.status === 'FETCH_ERROR') {
+        errorMessage = 'Network error: Cannot reach the server. Please check if the backend is running.';
+      } else if (err?.data?.message) {
+        errorMessage = err.data.message;
+      } else if (err?.message) {
+        errorMessage = err.message;
+      }
+      
+      toast.error(errorMessage, { id: toastId, duration: 3000 });
     }
   };
 
