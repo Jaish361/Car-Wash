@@ -28,17 +28,23 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: (origin, callback) => {
+      // List of allowed origins
       const allowedOrigins = [
         config.frontendUrl,
         'http://localhost:5173',
         'http://localhost:5174',
         'http://localhost:3000',
-        'https://car-wash-gules.vercel.app'
+        'https://car-wash-gules.vercel.app',
       ];
       
-      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      // Allow all Vercel preview deployments (*.vercel.app)
+      const isVercelPreview = origin && origin.includes('vercel.app');
+      
+      // Allow request if it matches allowed list or is a Vercel preview
+      if (!origin || allowedOrigins.includes(origin) || isVercelPreview) {
         callback(null, true);
       } else {
+        console.log(`CORS blocked origin: ${origin}`);
         callback(new Error('Not allowed by CORS'));
       }
     },
